@@ -122,7 +122,7 @@ docs/TAILOR-WORKFLOW-RESEARCH.md  Manual records, sources, implemented features 
 5. **Realtime chat**: set `PUSHER_*` (or a self-hosted Soketi server). Without it chat polls every 4 s — fine for launch, costlier at scale.
 6. **Push notifications**: set the VAPID keys (`npm run vapid`).
 7. **Payments**: get Easypaisa and Safepay merchant accounts, add the keys, test every flow in each gateway's sandbox, **verify the adapter field names/signatures against the integration guides you receive** (`src/server/modules/payments/providers.ts`), finish the Easypaisa status-inquiry step (see `api/payments/easypaisa/callback`), then set `PAYMENTS_MODE=live`.
-8. **Cron**: call `GET /api/cron/expire-payments` every 5 minutes with `Authorization: Bearer $CRON_SECRET` (`vercel.json` includes this for Vercel; elsewhere use any scheduler).
+8. **Cron**: `vercel.json` schedules `GET /api/cron/expire-payments` daily at `0 0 * * *` (00:00 UTC / 05:00 Pakistan time), compatible with Vercel Hobby. Hobby invokes it within that hour, so unpaid orders can hold stock and slots until the daily cleanup runs. Set `CRON_SECRET` in Vercel's environment variables; Vercel sends it as `Authorization: Bearer $CRON_SECRET`. For cleanup every 5 minutes, use Vercel Pro and change the schedule to `*/5 * * * *`, or use an external scheduler that sends the same authorization header.
 9. **Maps**: OpenStreetMap's public tiles are for light use only. For real traffic set `NEXT_PUBLIC_MAP_TILE_URL` to a tile provider (MapTiler, Stadia, Thunderforest) or your own tile server.
 10. **Try-on model**: self-host `pose_landmarker_lite.task` on your CDN and point `NEXT_PUBLIC_POSE_MODEL_URL` at it.
 11. **Monitoring**: add error tracking (Sentry) and uptime checks on `/api/health`.
