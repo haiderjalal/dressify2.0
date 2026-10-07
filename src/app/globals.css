@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+/* `ur:` applies only when the page is in Urdu (e.g. smaller Nastaliq display sizes). */
+@custom-variant ur (&:where(html[lang="ur"], html[lang="ur"] *));
+
+/* ───────────────────────── Design tokens ─────────────────────────
+   Customer side: ivory, ink and champagne gold — quiet luxury.
+   Tailor dashboard reuses the palette with larger type and controls. */
+@theme {
+  --color-ivory: #f5f3ed;
+  --color-paper: #fffefb;
+  --color-sand: #ece9df;
+  --color-line: #deded3;
+  --color-line-strong: #d3c6b1;
+  --color-ink: #17140f;
+  --color-ink-soft: #2c2721;
+  --color-muted: #70685c;
+  --color-faint: #a39a8c;
+  --color-gold: #92703c;
+  --color-gold-deep: #77592b;
+  --color-gold-soft: #efe4cf;
+  --color-emerald: #234e42;
+  --color-emerald-soft: #e3ece7;
+  --color-danger: #b0442f;
+  --color-danger-soft: #f8e6e1;
+  --color-success: #2e7350;
+  --color-success-soft: #e2f0e7;
+  --color-warning: #a86a12;
+  --color-warning-soft: #fbefd9;
+  --color-info: #2f5d86;
+  --color-info-soft: #e3edf6;
+
+  --font-display: "Cormorant Garamond", "Noto Nastaliq Urdu", Georgia, serif;
+  --font-sans: "Inter Variable", "Noto Nastaliq Urdu", ui-sans-serif, system-ui, sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", "Inter Variable", serif;
+
+  --shadow-soft: 0 1px 2px rgb(23 20 15 / 0.04), 0 10px 30px -14px rgb(23 20 15 / 0.18);
+  --shadow-lift: 0 2px 6px rgb(23 20 15 / 0.05), 0 24px 48px -24px rgb(23 20 15 / 0.28);
+
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-ivory text-ink antialiased;
+    font-feature-settings: "ss01", "cv11";
+    font-variant-numeric: tabular-nums;
+  }
+  /* Urdu: Nastaliq needs more line height and a slightly larger size to stay readable. */
+  html[lang="ur"] body {
+    font-family: var(--font-urdu);
+    line-height: 2.05;
+    font-size: 1.04rem;
+  }
+  html[lang="ur"] .font-display {
+    font-family: var(--font-urdu);
+    letter-spacing: 0 !important;
+    /* Nastaliq has tall ascenders/descenders — tight Latin leading makes lines collide. */
+    line-height: 1.8 !important;
+  }
+  html[lang="ur"] p.leading-relaxed {
+    line-height: 2.1 !important;
+  }
+  html[lang="ur"] .tracking-wide,
+  html[lang="ur"] .tracking-wider,
+  html[lang="ur"] .tracking-widest,
+  html[lang="ur"] .uppercase {
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+  ::selection {
+    @apply bg-gold-soft text-ink;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+  input[type="number"]::-webkit-inner-spin-button {
+    opacity: 0.4;
+  }
+  dialog::backdrop {
+    background: rgb(23 20 15 / 0.45);
+    backdrop-filter: blur(2px);
+  }
+}
+
+/* Shared atelier language: linen, forest ink, clean edges and editorial type. */
+.atelier-app { background: radial-gradient(ellipse at 85% 0%, #e8ede5 0, transparent 45%), var(--color-ivory); }
+.atelier-header { box-shadow: 0 4px 24px rgb(35 78 66 / 0.035); }
+.atelier-sidebar { border-inline-end: 1px solid var(--color-line); padding-inline-end: 1.25rem; }
+.atelier-nav a { border-radius: 0.75rem; font-size: 0.9375rem; padding-block: 0.8rem; }
+.atelier-nav a[aria-current="page"] { background: var(--color-emerald); box-shadow: 0 4px 12px rgb(35 78 66 / .12); }
+.atelier-nav svg { width: 1.25rem; height: 1.25rem; }
+.atelier-panel { background: var(--color-paper); border: 1px solid var(--color-line); border-radius: 1.25rem; box-shadow: 0 4px 18px rgb(35 78 66 / .035); }
+.counter-banner { display: grid; grid-template-columns: 1.3fr 1fr; align-items: center; gap: 2rem; padding: 2rem; background: #e5ebe0; border: 1px solid #d4decc; border-radius: 1.5rem; color: var(--color-emerald); background-image: repeating-linear-gradient(90deg, transparent 0 3px, rgb(35 78 66 / .016) 3px 4px); }
+.workshop-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--color-paper); border: 1px solid var(--color-line); border-radius: 1.25rem; padding: 1.5rem 0; }
+.workshop-metrics > div { padding: 0 1.25rem; border-inline-end: 1px solid var(--color-line); }
+.workshop-metrics > div:last-child { border: 0; }
+.workshop-metrics > div > p:last-child { overflow-wrap: anywhere; font-size: clamp(1.4rem, 2.1vw, 1.875rem); }
+.workshop-row p { overflow-wrap: anywhere; }
+.workshop-row { display: flex; align-items: center; gap: 1rem; padding: 1.25rem; transition: background .2s; }
+.workshop-row:hover { background: #f3f5ee; }
+.skip-link { position: fixed; inset-block-start: -6rem; inset-inline-start: 1rem; z-index: 60; padding: .75rem 1rem; background: var(--color-emerald); color: var(--color-paper); border-radius: .75rem; }
+.skip-link:focus { inset-block-start: 1rem; }
+.atelier-app main > div > h1, .atelier-app main > div > div > h1 { letter-spacing: -.025em; }
+.atelier-app main .rounded-3xl.border { border-radius: 1.25rem; box-shadow: 0 4px 18px rgb(35 78 66 / .035); }
+.atelier-app main .rounded-3xl.border:hover { border-color: var(--color-line-strong); }
+.home-hero { position: relative; overflow: hidden; }
+.home-hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+.hero-art { position: relative; border-radius: 11rem 11rem 1.5rem 1.5rem; overflow: hidden; background: #dce4d6; border: 1px solid #cbd7c3; }
+.hero-art img { width: 100%; height: auto; display: block; }
+.hero-art-caption { border-top: 1px solid #cbd7c3; padding: 1rem 1.5rem; font-size: .875rem; color: var(--color-emerald); }
+.site-header { box-shadow: 0 6px 30px rgb(35 78 66 / .04); }
+.app-content h1, .public-content h1 { letter-spacing: -.035em; text-wrap: balance; }
+.app-content h2, .public-content h2 { text-wrap: balance; }
+.app-content > div > div:first-child:has(h1) { border-bottom: 1px solid var(--color-line); padding-bottom: 1.5rem; }
+.public-content #how ol { counter-reset: process; gap: 0; border-block: 1px solid var(--color-line); }
+.public-content #how li { border: 0; border-inline-end: 1px solid var(--color-line); border-radius: 0; box-shadow: none; background: transparent; padding: 2rem; }
+.public-content #how li:last-child { border-inline-end: 0; }
+.public-content #how li > span { border-radius: .75rem; background: var(--color-emerald-soft); color: var(--color-emerald); }
+.tailor-discovery-card { box-shadow: none; }
+.tailor-discovery-card:hover { border-color: #b6c8b9; }
+.app-content .rounded-3xl.border { border-radius: 1.25rem; box-shadow: 0 4px 18px rgb(35 78 66 / .035); }
+@media (max-width: 767px) {
+  .counter-banner, .home-hero-grid { grid-template-columns: 1fr; padding: 1.5rem; gap: 2rem; }
+  .home-hero-grid { padding: 0; }
+  .hero-art { max-width: 26rem; width: 100%; margin-inline: auto; }
+  .workshop-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 0; }
+  .workshop-metrics > div:nth-child(2) { border: 0; }
+  .workshop-row { gap: .75rem; padding: 1rem; }
+  .workshop-row > span:first-child { display: none; }
+  .public-content #how li { border-inline-end: 0; border-bottom: 1px solid var(--color-line); padding-inline: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+@media print {
+  .atelier-app { background: white; }
+  .atelier-app > div { display: block; padding: 0; }
+  .atelier-app nav { display: none !important; }
+  .atelier-panel { box-shadow: none; break-inside: avoid; }
+  .workshop-detail { font-size: 12pt; }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold tracking-[0.22em] text-gold uppercase;
+  }
+  .hairline {
+    @apply border-line;
+  }
+  /* Woven-linen texture used behind hero and swatches. */
+  .linen {
+    background-image:
+      repeating-linear-gradient(0deg, rgb(23 20 15 / 0.018) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgb(23 20 15 / 0.018) 0 1px, transparent 1px 3px);
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Leaflet tweaks so the map matches the palette */
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--color-sand);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 14px;
+  box-shadow: var(--shadow-lift);
+}
+.dfy-pin {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9999px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font: 600 12px/1 var(--font-sans);
+  border: 2px solid var(--color-paper);
+  box-shadow: 0 6px 16px -6px rgb(23 20 15 / 0.6);
+}
+.dfy-pin.women {
+  background: var(--color-gold-deep);
+}
+.dfy-me {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #2f6fed;
+  border: 3px solid white;
+  box-shadow: 0 0 0 6px rgb(47 111 237 / 0.2);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+}

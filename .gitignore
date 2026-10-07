@@ -1,0 +1,12 @@
+node_modules
+.next
+.env
+.env.local
+.env.*
+!.env.example
+*.log
+storage/uploads/*
+!storage/uploads/.gitkeep
+*.tsbuildinfo
+next-env.d.ts
+public/mediapipe
